@@ -1,0 +1,13 @@
+unsloth==2025.3.19
+pydantic==2.11.1
+langchain-huggingface==0.1.2
+langchain-chroma==0.2.2
+langchain-text-splitters==0.3.7
+xformers==0.0.29.post3
+codebleu==0.7.1
+tree-sitter-cpp==0.21.0
+clang-format==20.1.0
+openai==1.72.0
+torch>=2.0.0
+transformers>=4.30.0
+accelerate>=0.20.0 

@@ -1,0 +1,271 @@
+article_id,category,title,content
+BIL-001,billing,Understanding Your Monthly Invoice,"
+Our billing system generates invoices on the 1st of each month. Your invoice includes:
+- Base subscription charges
+- Any additional usage fees
+- Applied discounts
+- Taxes and fees
+
+Invoices are sent to your registered email address and can also be accessed from your account dashboard. Payment is automatically processed using your default payment method.
+
+If you have questions about specific charges, please reference the invoice number when contacting support.
+        "
+BIL-002,billing,Payment Methods Accepted,"
+We accept the following payment methods:
+- Credit cards (Visa, Mastercard, American Express, Discover)
+- Debit cards with a major card network logo
+- PayPal
+- Bank transfers (for annual plans only)
+
+To update your payment method:
+1. Log in to your account
+2. Go to Billing & Payments
+3. Select ""Payment Methods""
+4. Choose ""Add Payment Method"" or edit an existing one
+
+Your default payment method will be used for automatic payments. You can change your default method at any time.
+        "
+BIL-003,billing,Requesting a Refund,"
+We offer refunds under the following circumstances:
+- Within 14 days of initial purchase (full refund)
+- Service outage lasting more than 24 hours (prorated refund)
+- Duplicate charges (full refund)
+
+To request a refund:
+1. Log in to your account
+2. Go to Billing & Payments
+3. Select the invoice in question
+4. Click ""Request Refund""
+5. Fill out the refund request form
+
+Our billing team reviews all refund requests within 2 business days. Approved refunds typically process within 5-7 business days, depending on your payment method.
+        "
+TECH-001,technical,Troubleshooting Login Issues,"
+If you're having trouble logging in to your account, try these steps:
+
+1. Clear your browser cache and cookies
+2. Try using a different browser
+3. Ensure you're using the correct email address
+4. Reset your password:
+   - Click ""Forgot Password"" on the login page
+   - Follow the instructions sent to your email
+   - Create a new password following our security requirements
+
+If you're still experiencing issues after trying these steps:
+- Check if your account is locked (after too many failed attempts)
+- Verify your internet connection
+- Disable any ad-blockers or VPNs temporarily
+
+For persistent login problems, please contact support with your account email and a screenshot of any error messages.
+        "
+TECH-002,technical,App Installation Guide,"
+Installing our app on different devices:
+
+For iOS:
+1. Open the App Store
+2. Search for ""[Product Name]""
+3. Tap ""Get"" or the download icon
+4. Authenticate with Face ID, Touch ID, or your Apple ID password
+5. Wait for the download to complete
+6. Open the app and sign in to your account
+
+For Android:
+1. Open the Google Play Store
+2. Search for ""[Product Name]""
+3. Tap ""Install""
+4. Accept the permissions
+5. Wait for the download to complete
+6. Open the app and sign in to your account
+
+System Requirements:
+- iOS 14.0 or later
+- Android 8.0 or later
+- 150MB of free storage
+
+If the app doesn't appear in search results, your device may not be compatible with the current version.
+        "
+TECH-003,technical,Fixing Sync Issues,"
+If you're experiencing synchronization problems between devices:
+
+1. Check your internet connection
+   - Ensure you have a stable WiFi or cellular connection
+   - Try disconnecting and reconnecting to your network
+
+2. Force close and restart the app
+   - iOS: Swipe up from the bottom (or double-press home button on older devices)
+   - Android: Access recent apps and swipe the app away
+
+3. Check for app updates
+   - Outdated versions may have sync compatibility issues
+
+4. Verify account login status
+   - Ensure you're logged into the same account on all devices
+
+5. Manual sync
+   - Pull down on the main screen to trigger a manual sync
+   - Check the timestamp of the last successful sync
+
+6. Clear app cache
+   - Go to device settings > Apps > [Product Name] > Storage > Clear Cache
+
+If problems persist, you may need to log out of all devices and log back in, which will force a full data synchronization.
+        "
+ACC-001,account,Changing Your Email Address,"
+To change the email address associated with your account:
+
+1. Log in to your account using your current email address
+2. Go to Account Settings (usually found in the top-right menu or under your profile)
+3. Select ""Email"" or ""Contact Information""
+4. Choose ""Edit"" or ""Change Email""
+5. Enter your new email address
+6. Verify your identity by entering your password
+7. Click ""Save"" or ""Update""
+
+You'll receive a verification link at your new email address. You must click this link to complete the change. Until verification, your current email remains active.
+
+Important notes:
+- Your new email cannot be already associated with another account
+- You'll use the new email for future logins
+- Account notifications will be sent to the new email
+- Your subscription and billing information will remain unchanged
+        "
+ACC-002,account,Two-Factor Authentication Setup,"
+Enhance your account security by setting up Two-Factor Authentication (2FA):
+
+1. Log in to your account
+2. Navigate to Account Settings > Security
+3. Find the ""Two-Factor Authentication"" section
+4. Click ""Enable"" or ""Set up 2FA""
+
+Choose your preferred 2FA method:
+- Authenticator App (recommended):
+  1. Install Google Authenticator, Authy, or similar app
+  2. Scan the displayed QR code with the app
+  3. Enter the 6-digit code from the app to verify
+
+- SMS Verification:
+  1. Enter your phone number
+  2. Receive a verification code via text
+  3. Enter the code to complete setup
+
+Important: Save your backup codes in a secure location. If you lose access to your authentication method, these codes will allow you to recover your account.
+
+Once enabled, you'll need both your password and a verification code when logging in from a new device.
+        "
+ACC-003,account,Deleting Your Account,"
+If you wish to delete your account, please be aware that this action is permanent and cannot be undone. All your data will be removed from our systems.
+
+To delete your account:
+1. Log in to your account
+2. Go to Account Settings
+3. Scroll to the bottom and find ""Close Account"" or ""Delete Account""
+4. Click the option and follow the prompts
+5. Verify your identity by entering your password
+6. Confirm your decision
+
+Before deleting:
+- Download any data you wish to keep
+- Cancel any active subscriptions
+- Resolve any outstanding payments
+
+Note: Depending on your subscription status, you may need to contact customer support to process your account deletion. Some data may be retained for legal and regulatory purposes as outlined in our Privacy Policy.
+
+The deletion process typically takes up to 30 days to complete across all our systems.
+        "
+PROD-001,product,Basic Features Overview,"
+Our product includes the following core features:
+
+Dashboard:
+- Customizable widgets
+- Real-time data visualization
+- Summary reports and statistics
+
+Project Management:
+- Task creation and assignment
+- Deadline setting and reminders
+- Progress tracking with status updates
+
+Collaboration:
+- File sharing and document storage
+- Comment threads on tasks and projects
+- Team messaging and notifications
+
+Reports:
+- Custom report generation
+- Export options (PDF, CSV, Excel)
+- Scheduled automated reports
+
+Mobile Access:
+- Native iOS and Android apps
+- Responsive web design for all devices
+- Offline mode with synchronization
+
+To get started, we recommend watching our tutorial videos in the Help Center or scheduling a free onboarding call with our customer success team.
+        "
+PROD-002,product,Subscription Plan Comparison,"
+We offer the following subscription plans:
+
+Basic Plan ($9.99/month):
+- Single user
+- 5GB storage
+- Core features
+- Email support
+
+Professional Plan ($24.99/month):
+- Up to 5 users
+- 25GB storage
+- Advanced features
+- Priority email support
+- Basic analytics
+
+Enterprise Plan ($49.99/month):
+- Unlimited users
+- 100GB storage
+- All features
+- Priority phone and email support
+- Advanced analytics
+- Custom integrations
+- Dedicated account manager
+
+All plans include:
+- Regular software updates
+- Security patches
+- Data backup
+- Web and mobile access
+
+You can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.
+        "
+PROD-003,product,Integration with Third-Party Tools,"
+Our product integrates with the following third-party tools:
+
+Productivity:
+- Google Workspace (Drive, Calendar, Gmail)
+- Microsoft 365 (OneDrive, Outlook, Teams)
+- Slack
+
+Project Management:
+- Jira
+- Trello
+- Asana
+
+CRM:
+- Salesforce
+- HubSpot
+- Zoho CRM
+
+File Storage:
+- Dropbox
+- Box
+- Google Drive
+
+To set up an integration:
+1. Go to Settings > Integrations
+2. Select the tool you want to connect
+3. Click ""Connect"" and follow the authorization process
+4. Configure sync settings and permissions
+5. Test the connection
+
+For Enterprise customers, we offer custom API integrations with additional systems. Contact your account manager for details.
+
+Note: Some integrations may require specific subscription levels for both our product and the third-party service.
+        "

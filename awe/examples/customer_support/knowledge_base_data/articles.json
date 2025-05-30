@@ -1,0 +1,74 @@
+[
+  {
+    "article_id": "BIL-001",
+    "category": "billing",
+    "title": "Understanding Your Monthly Invoice",
+    "content": "\nOur billing system generates invoices on the 1st of each month. Your invoice includes:\n- Base subscription charges\n- Any additional usage fees\n- Applied discounts\n- Taxes and fees\n\nInvoices are sent to your registered email address and can also be accessed from your account dashboard. Payment is automatically processed using your default payment method.\n\nIf you have questions about specific charges, please reference the invoice number when contacting support.\n        "
+  },
+  {
+    "article_id": "BIL-002",
+    "category": "billing",
+    "title": "Payment Methods Accepted",
+    "content": "\nWe accept the following payment methods:\n- Credit cards (Visa, Mastercard, American Express, Discover)\n- Debit cards with a major card network logo\n- PayPal\n- Bank transfers (for annual plans only)\n\nTo update your payment method:\n1. Log in to your account\n2. Go to Billing & Payments\n3. Select \"Payment Methods\"\n4. Choose \"Add Payment Method\" or edit an existing one\n\nYour default payment method will be used for automatic payments. You can change your default method at any time.\n        "
+  },
+  {
+    "article_id": "BIL-003",
+    "category": "billing",
+    "title": "Requesting a Refund",
+    "content": "\nWe offer refunds under the following circumstances:\n- Within 14 days of initial purchase (full refund)\n- Service outage lasting more than 24 hours (prorated refund)\n- Duplicate charges (full refund)\n\nTo request a refund:\n1. Log in to your account\n2. Go to Billing & Payments\n3. Select the invoice in question\n4. Click \"Request Refund\"\n5. Fill out the refund request form\n\nOur billing team reviews all refund requests within 2 business days. Approved refunds typically process within 5-7 business days, depending on your payment method.\n        "
+  },
+  {
+    "article_id": "TECH-001",
+    "category": "technical",
+    "title": "Troubleshooting Login Issues",
+    "content": "\nIf you're having trouble logging in to your account, try these steps:\n\n1. Clear your browser cache and cookies\n2. Try using a different browser\n3. Ensure you're using the correct email address\n4. Reset your password:\n   - Click \"Forgot Password\" on the login page\n   - Follow the instructions sent to your email\n   - Create a new password following our security requirements\n\nIf you're still experiencing issues after trying these steps:\n- Check if your account is locked (after too many failed attempts)\n- Verify your internet connection\n- Disable any ad-blockers or VPNs temporarily\n\nFor persistent login problems, please contact support with your account email and a screenshot of any error messages.\n        "
+  },
+  {
+    "article_id": "TECH-002",
+    "category": "technical",
+    "title": "App Installation Guide",
+    "content": "\nInstalling our app on different devices:\n\nFor iOS:\n1. Open the App Store\n2. Search for \"[Product Name]\"\n3. Tap \"Get\" or the download icon\n4. Authenticate with Face ID, Touch ID, or your Apple ID password\n5. Wait for the download to complete\n6. Open the app and sign in to your account\n\nFor Android:\n1. Open the Google Play Store\n2. Search for \"[Product Name]\"\n3. Tap \"Install\"\n4. Accept the permissions\n5. Wait for the download to complete\n6. Open the app and sign in to your account\n\nSystem Requirements:\n- iOS 14.0 or later\n- Android 8.0 or later\n- 150MB of free storage\n\nIf the app doesn't appear in search results, your device may not be compatible with the current version.\n        "
+  },
+  {
+    "article_id": "TECH-003",
+    "category": "technical",
+    "title": "Fixing Sync Issues",
+    "content": "\nIf you're experiencing synchronization problems between devices:\n\n1. Check your internet connection\n   - Ensure you have a stable WiFi or cellular connection\n   - Try disconnecting and reconnecting to your network\n\n2. Force close and restart the app\n   - iOS: Swipe up from the bottom (or double-press home button on older devices)\n   - Android: Access recent apps and swipe the app away\n\n3. Check for app updates\n   - Outdated versions may have sync compatibility issues\n\n4. Verify account login status\n   - Ensure you're logged into the same account on all devices\n\n5. Manual sync\n   - Pull down on the main screen to trigger a manual sync\n   - Check the timestamp of the last successful sync\n\n6. Clear app cache\n   - Go to device settings > Apps > [Product Name] > Storage > Clear Cache\n\nIf problems persist, you may need to log out of all devices and log back in, which will force a full data synchronization.\n        "
+  },
+  {
+    "article_id": "ACC-001",
+    "category": "account",
+    "title": "Changing Your Email Address",
+    "content": "\nTo change the email address associated with your account:\n\n1. Log in to your account using your current email address\n2. Go to Account Settings (usually found in the top-right menu or under your profile)\n3. Select \"Email\" or \"Contact Information\"\n4. Choose \"Edit\" or \"Change Email\"\n5. Enter your new email address\n6. Verify your identity by entering your password\n7. Click \"Save\" or \"Update\"\n\nYou'll receive a verification link at your new email address. You must click this link to complete the change. Until verification, your current email remains active.\n\nImportant notes:\n- Your new email cannot be already associated with another account\n- You'll use the new email for future logins\n- Account notifications will be sent to the new email\n- Your subscription and billing information will remain unchanged\n        "
+  },
+  {
+    "article_id": "ACC-002",
+    "category": "account",
+    "title": "Two-Factor Authentication Setup",
+    "content": "\nEnhance your account security by setting up Two-Factor Authentication (2FA):\n\n1. Log in to your account\n2. Navigate to Account Settings > Security\n3. Find the \"Two-Factor Authentication\" section\n4. Click \"Enable\" or \"Set up 2FA\"\n\nChoose your preferred 2FA method:\n- Authenticator App (recommended):\n  1. Install Google Authenticator, Authy, or similar app\n  2. Scan the displayed QR code with the app\n  3. Enter the 6-digit code from the app to verify\n\n- SMS Verification:\n  1. Enter your phone number\n  2. Receive a verification code via text\n  3. Enter the code to complete setup\n\nImportant: Save your backup codes in a secure location. If you lose access to your authentication method, these codes will allow you to recover your account.\n\nOnce enabled, you'll need both your password and a verification code when logging in from a new device.\n        "
+  },
+  {
+    "article_id": "ACC-003",
+    "category": "account",
+    "title": "Deleting Your Account",
+    "content": "\nIf you wish to delete your account, please be aware that this action is permanent and cannot be undone. All your data will be removed from our systems.\n\nTo delete your account:\n1. Log in to your account\n2. Go to Account Settings\n3. Scroll to the bottom and find \"Close Account\" or \"Delete Account\"\n4. Click the option and follow the prompts\n5. Verify your identity by entering your password\n6. Confirm your decision\n\nBefore deleting:\n- Download any data you wish to keep\n- Cancel any active subscriptions\n- Resolve any outstanding payments\n\nNote: Depending on your subscription status, you may need to contact customer support to process your account deletion. Some data may be retained for legal and regulatory purposes as outlined in our Privacy Policy.\n\nThe deletion process typically takes up to 30 days to complete across all our systems.\n        "
+  },
+  {
+    "article_id": "PROD-001",
+    "category": "product",
+    "title": "Basic Features Overview",
+    "content": "\nOur product includes the following core features:\n\nDashboard:\n- Customizable widgets\n- Real-time data visualization\n- Summary reports and statistics\n\nProject Management:\n- Task creation and assignment\n- Deadline setting and reminders\n- Progress tracking with status updates\n\nCollaboration:\n- File sharing and document storage\n- Comment threads on tasks and projects\n- Team messaging and notifications\n\nReports:\n- Custom report generation\n- Export options (PDF, CSV, Excel)\n- Scheduled automated reports\n\nMobile Access:\n- Native iOS and Android apps\n- Responsive web design for all devices\n- Offline mode with synchronization\n\nTo get started, we recommend watching our tutorial videos in the Help Center or scheduling a free onboarding call with our customer success team.\n        "
+  },
+  {
+    "article_id": "PROD-002",
+    "category": "product",
+    "title": "Subscription Plan Comparison",
+    "content": "\nWe offer the following subscription plans:\n\nBasic Plan ($9.99/month):\n- Single user\n- 5GB storage\n- Core features\n- Email support\n\nProfessional Plan ($24.99/month):\n- Up to 5 users\n- 25GB storage\n- Advanced features\n- Priority email support\n- Basic analytics\n\nEnterprise Plan ($49.99/month):\n- Unlimited users\n- 100GB storage\n- All features\n- Priority phone and email support\n- Advanced analytics\n- Custom integrations\n- Dedicated account manager\n\nAll plans include:\n- Regular software updates\n- Security patches\n- Data backup\n- Web and mobile access\n\nYou can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.\n        "
+  },
+  {
+    "article_id": "PROD-003",
+    "category": "product",
+    "title": "Integration with Third-Party Tools",
+    "content": "\nOur product integrates with the following third-party tools:\n\nProductivity:\n- Google Workspace (Drive, Calendar, Gmail)\n- Microsoft 365 (OneDrive, Outlook, Teams)\n- Slack\n\nProject Management:\n- Jira\n- Trello\n- Asana\n\nCRM:\n- Salesforce\n- HubSpot\n- Zoho CRM\n\nFile Storage:\n- Dropbox\n- Box\n- Google Drive\n\nTo set up an integration:\n1. Go to Settings > Integrations\n2. Select the tool you want to connect\n3. Click \"Connect\" and follow the authorization process\n4. Configure sync settings and permissions\n5. Test the connection\n\nFor Enterprise customers, we offer custom API integrations with additional systems. Contact your account manager for details.\n\nNote: Some integrations may require specific subscription levels for both our product and the third-party service.\n        "
+  }
+]

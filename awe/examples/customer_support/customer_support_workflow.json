@@ -1,0 +1,142 @@
+{
+    "llms": [
+        {
+            "id": "gemma-2b",
+            "llm": {
+                "type": "HFpipeline",
+                "llm_path": "mistralai/Mistral-7B-Instruct-v0.1",
+                "system_prompt": "You are a helpful customer support assistant that provides accurate and concise responses."
+            }
+        }
+    ],
+    "agent_arguments": [
+        {
+            "type": "TicketInput",
+            "fields": {
+                "ticket_id": {"type": "str", "description": "The unique identifier for the support ticket."},
+                "customer_name": {"type": "str", "description": "The name of the customer who submitted the ticket."},
+                "ticket_content": {"type": "str", "description": "The content of the support ticket."}
+            }
+        },
+        {
+            "type": "CategoryOutput",
+            "fields": {
+                "ticket_id": {"type": "str", "description": "The unique identifier for the support ticket."},
+                "customer_name": {"type": "str", "description": "The name of the customer who submitted the ticket."},
+                "ticket_content": {"type": "str", "description": "The content of the support ticket."},
+                "category": {"type": "str", "description": "The category of the support ticket (e.g., 'billing', 'technical', 'account', 'product')."}
+            }
+        },
+        {
+            "type": "ResponseOutput",
+            "fields": {
+                "ticket_id": {"type": "str", "description": "The unique identifier for the support ticket."},
+                "customer_name": {"type": "str", "description": "The name of the customer who submitted the ticket."},
+                "ticket_content": {"type": "str", "description": "The content of the support ticket."},
+                "category": {"type": "str", "description": "The category of the support ticket."},
+                "response": {"type": "str", "description": "The response to the customer's ticket."},
+                "requires_escalation": {"type": "bool", "description": "Whether the ticket needs to be escalated to a human agent."}
+            }
+        },
+        {
+            "type": "TimestampOutput",
+            "fields": {
+                "ticket_id": {"type": "str", "description": "The unique identifier for the support ticket."},
+                "customer_name": {"type": "str", "description": "The name of the customer who submitted the ticket."},
+                "ticket_content": {"type": "str", "description": "The content of the support ticket."},
+                "category": {"type": "str", "description": "The category of the support ticket."},
+                "response": {"type": "str", "description": "The response to the customer's ticket."},
+                "requires_escalation": {"type": "bool", "description": "Whether the ticket needs to be escalated to a human agent."},
+                "timestamp": {"type": "str", "description": "The timestamp when the response was generated."}
+            }
+        },
+        {
+            "type": "EscalationOutput",
+            "fields": {
+                "ticket_id": {"type": "str", "description": "The unique identifier for the support ticket."},
+                "customer_name": {"type": "str", "description": "The name of the customer who submitted the ticket."},
+                "ticket_content": {"type": "str", "description": "The content of the support ticket."},
+                "category": {"type": "str", "description": "The category of the support ticket."},
+                "response": {"type": "str", "description": "The response to the customer's ticket."},
+                "requires_escalation": {"type": "bool", "description": "Whether the ticket needs to be escalated to a human agent."},
+                "escalation_reason": {"type": "str", "description": "The reason why the ticket needs to be escalated."}
+            }
+        }
+    ],
+    "agents": [
+        {
+            "type": "AIAgent",
+            "name_id": "CategoryClassifier",
+            "input_schema": "TicketInput",
+            "output_schema": "CategoryOutput",
+            "propagate_input_args": true,
+            "llm_id": "gemma-2b",
+            "prompt": "customer_support_prompts.CATEGORY_CLASSIFIER_TEMPLATE",
+            "max_output_tokens": 500
+        },
+        {
+            "type": "RAGAgent",
+            "name_id": "TicketResponder",
+            "input_schema": "CategoryOutput",
+            "output_schema": "ResponseOutput",
+            "propagate_input_args": true,
+            "llm_id": "gemma-2b",
+            "prompt": "customer_support_prompts.TICKET_RESPONDER_TEMPLATE",
+            "rag": {
+                "type": "customer_support_rag.SupportKnowledgeRAG",
+                "embedding_model_path": "intfloat/multilingual-e5-large-instruct",
+                "embedder_cache_path": "./embedder_cache",
+                "knowledge_base_path": "./support_knowledge_base"
+            },
+            "retrieval_param_mapping": {"retrieval_query": "ticket_content"},
+            "retrieval_placeholder_key": "knowledge_base_context",
+            "top_k": 3,
+            "max_output_tokens": 1000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "TimestampAdder",
+            "input_schema": "ResponseOutput",
+            "output_schema": "TimestampOutput",
+            "propagate_input_args": true,
+            "call_function": "customer_support_functions.get_timestamp"
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "EscalationJustifier",
+            "input_schema": "TimestampOutput",
+            "output_schema": "EscalationOutput",
+            "propagate_input_args": true,
+            "llm_id": "gemma-2b",
+            "prompt": "customer_support_prompts.ESCALATION_JUSTIFIER_TEMPLATE",
+            "max_output_tokens": 500
+        }
+    ],
+    "edges": [
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "start",
+            "targetAgent": "CategoryClassifier"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "CategoryClassifier",
+            "targetAgent": "TicketResponder"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "TicketResponder",
+            "targetAgent": "TimestampAdder"
+        },
+        {
+            "type": "ConditionalEdge",
+            "sourceAgent": "TimestampAdder",
+            "condition_fn": "customer_support_functions.check_escalation"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "EscalationJustifier",
+            "targetAgent": "end"
+        }
+    ]
+}
