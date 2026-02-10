@@ -1,18 +1,18 @@
 #########################################################################
-# 1) Sign in to Hugging Face by running this command: huggingface-cli login
-#
-##### 2) RUN #####
-### Execute this script:
-# PYTHONPATH=/path/to/parent/directory/of/awe python awe/examples/customer_support/customer_support_run.py 
-### Alternatively, uncomment code below
-# Set project location to be able to call project modules 
+# 1) Sign in to Hugging Face by running this command: hf auth login
+import os
 import sys
-sys.path.append("/path/to/parent/directory/of/awe")
+from pathlib import Path
+
+# Ensure awe package is importable (no PYTHONPATH needed when run from repo)
+_src = Path(__file__).resolve().parent.parent.parent.parent
+if str(_src) not in sys.path:
+    sys.path.insert(0, str(_src))
 #########################################################################
 
 from awe import load_and_run_workflow
-import os
-script_dir = os.path.dirname(__file__)
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
 # Sample support ticket
 ticket = {
     "ticket_id": "T12345",
