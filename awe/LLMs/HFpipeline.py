@@ -3,7 +3,7 @@ from pydantic import Field
 from typing import Optional
 import torch
 
-from transformers import pipeline
+from transformers import pipeline, GenerationConfig
 
 class HFpipeline(LLM):
     """
@@ -47,10 +47,16 @@ class HFpipeline(LLM):
         return messages
 
     def _send_message(self, messages: list[dict[str, str]], max_tokens: int) -> dict[str, any]:
+        # Use GenerationConfig with only max_new_tokens to avoid conflict warning when the
+        # model's default config sets max_length (e.g. 262144); see Hugging Face text generation docs.
+        generation_config = GenerationConfig(
+            max_new_tokens=max_tokens,
+            max_length=None,  # avoid "max_new_tokens and max_length both set" warning
+            pad_token_id=self._llm.tokenizer.eos_token_id,
+        )
         response = self._llm(
-            messages, 
-            max_new_tokens=max_tokens, 
-            pad_token_id=self._llm.tokenizer.eos_token_id #To suppress warnings
+            messages,
+            generation_config=generation_config,
         )
         return response
     

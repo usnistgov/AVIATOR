@@ -1,4 +1,4 @@
-# Awe (Agentic-AI Workflow Engine)
+# Awe (AI Agentic Workflow Engine)
 
 <p align="center">
   <picture>
@@ -10,10 +10,10 @@
 
 
 ## Overview
-Awe (Agentic-AI Workflow Engine) is a low-code python library to build and execute AI agentic workflows out of the box. Each agent performs a specific task and conditionally triggers subsequent agents based on its output. Currently, it supports both AI agents and tool agents that execute Python code.
+Awe (AI Agentic Workflow Engine) is a low-code python library to build and execute AI agentic workflows out of the box. Each agent performs a specific task and conditionally triggers subsequent agents based on its output. Currently, it supports both AI agents and tool agents that execute Python code.
 
 ## Highlights
-- ▶️ Low-code/No-code: Easily create and run complex workflows without extensive coding.
+- ▶️ Low-code/No-code: Easily create and run complex workflows with minimal configuration.
 - 🤖 AI & Tool Agents: Support for intelligent AI agents and tool agents.
 - 📋 Comprehensive Logging: Monitor and analyze workflow execution through detailed logging.
 - 💾 Experiment Reproducibility: Automatically save execution history and outputs for easy replication.
@@ -25,14 +25,16 @@ Awe (Agentic-AI Workflow Engine) is a low-code python library to build and execu
 
 1) Clone this repository:
 ```console
-git clone https://github.com/AmL-Dev/vul-code-gen/tree/main/awe.git
+git clone https://github.com/AmL-Dev/AVIATOR.git
 ```
 
 2) Install Dependencies
 
-To create a conda environment:
+To create a uv virtual environment:
 ```console
-conda env create -f environment.yml
+cd awe/
+uv sync
+source .venv/bin/activate
 ```
 
 *In case of issues, please refer to the list of dependencies [below](#dependencies).*
@@ -61,7 +63,7 @@ In a single `workflow_name.json` file, define the following:
     }
 ```
 
-- ✨ **LLMs** to be used by agents:
+- ✨ **LLMs** that will be used by agents:
 ```python
 
     "llms": [
@@ -113,7 +115,7 @@ In a single `workflow_name.json` file, define the following:
         ...
         "llm_id": "id of the LLM to be used",
         "prompt": "LLM prompt (string or path.to.python.file.PROMPT_TEMPLATE_NAME). Can hold placeholders for the input arguments. (Ensure expected placeholders are included in the input_schema)",
-        "max_output_tokens": nb of tokens to generate
+        "max_output_tokens": max nb of tokens to generate
     },
 ```
 → 🛢✨ **RAGAgent** executes a RAG call:
@@ -192,18 +194,19 @@ It represent a toy customer support workflow that:
 To run the workflow in `examples/customer_support`:
 1. Install dependencies and connect to Hugging Face:
 ```console
-pip install -r requirements.txt
-huggingface-cli login
+cd examples/customer_support
+uv pip install -r requirements.txt
+hf auth login #connect to huggingcace to download models
 ```
 
 2. Create the knowledge base:
 Update the path to the parent directory of awe at the top of the `create_knowledge_base.py` file:
 ```console
-python create_knowledge_base.py
+uv run create_knowledge_base.py
 ```
 3. Run the workflow using the Awe engine:
 ```console
-python customer_support_run.py
+uv run customer_support_run.py
 ```
 
 *Disclaimer: This example workflow is provided solely for demonstration purposes. It does not reflect any actual business implementation and should not be deployed in a production environment without appropriate modifications and testing.*
