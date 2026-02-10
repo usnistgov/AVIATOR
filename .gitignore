@@ -16,6 +16,11 @@
 # Mono auto generated files
 mono_crash.*
 
+# Virtual environment
+.venv/
+# Ignore downloaded ESBMC tool
+esbmc/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

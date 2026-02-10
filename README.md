@@ -6,8 +6,8 @@
 
 ## 📝 Abstract
 The increasing complexity of software systems and the sophistication of cyber-attacks have underscored the critical need for reliable automated software vulnerability detection. Data-driven approaches using deep learning models show promise but critically depend on the availability of large, accurately labeled datasets. Yet existing datasets either suffer from noisy labels, limited vulnerability coverage, or fail to reflect vulnerabilities as they occur in real-world software. This also limits large-scale benchmarking of such solutions. Automated vulnerability injection provides a way to address these limitations, but existing techniques remain limited in coverage, contextual fidelity, or injection success.
-In this paper, we present AVIATOR, the first AI-agentic vulnerability injection framework. AVIATOR decomposes vulnerability injection into a coordinated workflow of specialized AI agents, tool-based analysis, and iterative self-correction, explicitly mirroring expert reasoning. It integrates retrieval-augmented generation and lightweight LoRA-based fine-tuning to produce realistic, category-specific vulnerabilities without relying on handcrafted patterns.
-Across three benchmarks, AVIATOR achieves high injection fidelity (91–95\%) surpassing existing injection techniques in both accuracy and vulnerability coverage. When used for data augmentation to train deep learning-based vulnerability detection (DLVD) models, AVIATOR provides the strongest downstream gains in vulnerability detection. Across models and base datasets, AVIATOR improves average F1 scores by +22\% over no augmentation, +25\% over VGX, holding the prior best injection success rate, and +3\% over VulScribeR, the prior state-of-the-art LLM-based injection model, with +7\% higher recall and no precision loss. Its augmented data exhibits the lowest distributional distortion and scales efficiently with $<$2\% syntax rejection at 4.3× lower cost than VulScribeR.
+In this paper, we present AVIATOR, the first AI-agentic vulnerability injection framework. AVIATOR decomposes vulnerability injection into a coordinated workflow of specialized AI agents, tool-based analysis, and iterative self-correction, explicitly mirroring expert reasoning. It integrates RAG and lightweight LoRA-based fine-tuning to produce realistic, category-specific vulnerabilities without relying on handcrafted patterns.
+Across three benchmarks, AVIATOR achieves high injection fidelity (91-95\%) surpassing existing injection techniques in both accuracy and vulnerability coverage. When used for data augmentation to train deep learning-based vulnerability detection (DLVD) models, AVIATOR provides the strongest downstream gains in vulnerability detection. Across models and base datasets, AVIATOR improves average F1 scores by +22\% over no augmentation, +25\% over VGX, holding the prior best injection success rate, and +3\% over VulScribeR, the prior state-of-the-art LLM-based injection model, with +7\% higher recall and no precision loss. Its augmented data exhibits the lowest distributional distortion and scales efficiently with <2% syntax rejection at 4.3× lower cost than VulScribeR.
 
 ## 🏗️ Repository Structure
 
@@ -27,7 +27,7 @@ Contains the implementation of the fine-tuning approaches used in AVIATOR:
 - Low-Rank Adaptation (LoRA) for efficient model fine-tuning
 
 ### 📊 validation_dataset
-Contains the datasets used for validating the AVIATOR framework:
+Contains the datasets or links to the datasets used for validating the AVIATOR framework in the paper:
 - Test cases and benchmarks
 - Evaluation metrics and results
 - Ground truth data for vulnerability injection
@@ -42,31 +42,25 @@ The main implementation of the AVIATOR vulnerability injection workflow, includi
 ## 🚀 Installation
 
 ### Prerequisites
-- Python 3.11
-- CUDA 12.1 (for GPU support)
+- Python>=3.11
+- uv
 
 ### Setup
 
 1. Clone the repository:
 ```bash
 git clone https://github.com/your-username/aviator.git
-cd aviator
+cd AVIATOR/
 ```
 
-2. Create and activate the conda environment:
+2. Create the virtual environment and install dependencies:
 ```bash
-conda create --name unsloth_env python=3.11 pytorch-cuda=12.1 pytorch cudatoolkit xformers -c pytorch -c nvidia -c xformers -y
-conda activate unsloth_env
+uv sync
 ```
 
-3. Install Python dependencies:
+3. Install ESBMC (for code verification):
 ```bash
-pip install -r requirements.txt
-```
-
-4. Install ESBMC (for code verification):
-```bash
-wget https://github.com/esbmc/esbmc/releases/download/v7.5/ESBMC-Linux.zip && unzip ESBMC-Linux.zip && rm ESBMC-Linux.zip && chmod 777 bin/esbmc
+wget https://github.com/esbmc/esbmc/releases/download/v7.5/ESBMC-Linux.zip && unzip -d esbmc ESBMC-Linux.zip && rm ESBMC-Linux.zip && chmod +x esbmc/bin/esbmc
 ```
 
 ## 📦 Dependencies

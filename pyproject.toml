@@ -1,0 +1,29 @@
+[project]
+name = "aviator"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "accelerate>=0.20.0",
+    "clang-format==20.1.0",
+    "codebleu>=0.7.0",
+    "langchain-chroma==0.2.2",
+    "langchain-huggingface==0.1.2",
+    "langchain-text-splitters==0.3.7",
+    "openai==1.72.0",
+    "pydantic==2.11.1",
+    "torch>=2.0.0",
+    "transformers>=4.30.0",
+    "tree-sitter-cpp==0.21.0",
+    "unsloth==2025.3.19",
+    "xformers==0.0.28",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }
