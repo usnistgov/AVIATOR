@@ -1,10 +1,10 @@
 {
     "llms": [
         {
-            "id": "gemma-2b",
+            "id": "mistral3-3b",
             "llm": {
                 "type": "HFpipeline",
-                "llm_path": "mistralai/Mistral-7B-Instruct-v0.1",
+                "llm_path": "mistralai/Ministral-3-3B-Instruct-2512",
                 "system_prompt": "You are a helpful customer support assistant that provides accurate and concise responses."
             }
         }
@@ -70,7 +70,7 @@
             "input_schema": "TicketInput",
             "output_schema": "CategoryOutput",
             "propagate_input_args": true,
-            "llm_id": "gemma-2b",
+            "llm_id": "mistral3-3b",
             "prompt": "customer_support_prompts.CATEGORY_CLASSIFIER_TEMPLATE",
             "max_output_tokens": 500
         },
@@ -80,7 +80,7 @@
             "input_schema": "CategoryOutput",
             "output_schema": "ResponseOutput",
             "propagate_input_args": true,
-            "llm_id": "gemma-2b",
+            "llm_id": "mistral3-3b",
             "prompt": "customer_support_prompts.TICKET_RESPONDER_TEMPLATE",
             "rag": {
                 "type": "customer_support_rag.SupportKnowledgeRAG",
@@ -107,7 +107,7 @@
             "input_schema": "TimestampOutput",
             "output_schema": "EscalationOutput",
             "propagate_input_args": true,
-            "llm_id": "gemma-2b",
+            "llm_id": "mistral3-3b",
             "prompt": "customer_support_prompts.ESCALATION_JUSTIFIER_TEMPLATE",
             "max_output_tokens": 500
         }
