@@ -225,11 +225,13 @@ The increasing complexity of software systems and the sophistication of cyber-at
 ## How to cite
 
 ```bibtex
-@inproceedings{aviator2025,
-  title     = {AVIATOR: Towards AI-Agentic Vulnerability Injection Workflow for High-Fidelity, Large-Scale Code Security Dataset},
-  author    = { ... },
-  booktitle = { ... },
+@article{aviator2025,
+  title     = {AI Agentic Vulnerability Injection And Transformation with Optimized Reasoning},
+  author    = {Lbath, Amine and Amini, Massih-Reza and Delaitre, Aurelien and Okun, Vadim},
   year      = {2025},
+  eprint    = {2508.20866},
+  archivePrefix = {arXiv},
+  url       = {https://arxiv.org/abs/2508.20866},
 }
 ```
 
