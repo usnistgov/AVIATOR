@@ -202,6 +202,12 @@ The intermediate output from step 1 must include `benign_code`, `vul_inject_id`,
 
 ---
 
+## Downstream Vulnerability Detection
+
+For the experiments evaluating impact on downstream vulnerability detection, we used [VulScribeR](https://github.com/shayandaneshvar/VulScribeR/tree/main), the official repository for the paper *VulScribeR: Exploring RAG-based Vulnerability Augmentation with LLMs*.
+
+---
+
 ## Dependencies
 
 Core dependencies (via `uv sync`): **unsloth**, **pydantic**, **langchain**, **ChromaDB**, **codebleu**, **tree-sitter-cpp**, **openai**, **PyTorch**, **Transformers**. See `pyproject.toml` and `requirements.txt`.
