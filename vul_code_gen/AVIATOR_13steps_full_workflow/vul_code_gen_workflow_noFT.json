@@ -324,7 +324,7 @@
             "propagate_input_args": true,
             "llm_id": "main_llm",
             "rag": {
-                "type": "vul_code_gen.VulCodePairRAG.ChromaVulCodePairRAG",
+                "type": "vul_code_gen.AVIATOR_13steps_full_workflow.VulCodePairRAG.ChromaVulCodePairRAG",
                 "embedding_model_path": "Alibaba-NLP/gte-Qwen2-1.5B-instruct",
                 "knowledge_base_path": "vul_code_gen/chromadb"
             },
@@ -360,7 +360,7 @@
             "propagate_input_args": true,
             "llm_id": "main_llm",
             "rag": {
-                "type": "vul_code_gen.VulCodePairRAG.ChromaVulCodePairRAG",
+                "type": "vul_code_gen.AVIATOR_13steps_full_workflow.VulCodePairRAG.ChromaVulCodePairRAG",
                 "embedding_model_path": "Alibaba-NLP/gte-Qwen2-1.5B-instruct",
                 "knowledge_base_path": "vul_code_gen/chromadb"
             },
