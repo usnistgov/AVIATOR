@@ -444,9 +444,47 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def _apply_llm_env_overrides(workflow_data: dict) -> None:
+    """
+    Override LLM config from environment variables. Enables Docker/CLI configuration
+    without editing workflow JSON files.
+
+    Supported env vars (apply to all matching LLM types):
+      AVIATOR_LLM_BASE_URL, AVIATOR_LLM_API_KEY, AVIATOR_LLM_MODEL  (OpenAICompatibleLLM)
+      AVIATOR_LLM_PATH  (HFpipeline llm_path, optional)
+      AVIATOR_LLM_FINETUNED_PATH  (vul_inject_SFT llm_path in FT workflow, optional)
+
+    Per-LLM overrides (ID = llm_def["id"] uppercased, e.g. main_llm -> MAIN_LLM):
+      AVIATOR_LLM_<ID>_BASE_URL, AVIATOR_LLM_<ID>_API_KEY, AVIATOR_LLM_<ID>_MODEL
+      AVIATOR_LLM_<ID>_PATH
+    """
+    if "llms" not in workflow_data:
+        return
+    for llm_def in workflow_data["llms"]:
+        llm_id = llm_def["id"]
+        llm_config = llm_def["llm"]
+        id_suffix = llm_id.upper().replace("-", "_")
+        overrides = [
+            ("AVIATOR_LLM_BASE_URL", f"AVIATOR_LLM_{id_suffix}_BASE_URL", "base_url"),
+            ("AVIATOR_LLM_API_KEY", f"AVIATOR_LLM_{id_suffix}_API_KEY", "api_key"),
+            ("AVIATOR_LLM_MODEL", f"AVIATOR_LLM_{id_suffix}_MODEL", "model"),
+            ("AVIATOR_LLM_PATH", f"AVIATOR_LLM_{id_suffix}_PATH", "llm_path"),
+        ]
+        for global_key, per_id_key, config_key in overrides:
+            val = os.environ.get(per_id_key)
+            if val is None and config_key == "llm_path" and llm_id == "vul_inject_SFT":
+                val = os.environ.get("AVIATOR_LLM_FINETUNED_PATH")
+            if val is None:
+                val = os.environ.get(global_key)
+            if val is not None and config_key in llm_config:
+                llm_config[config_key] = val
+
+
 def load_workflow_from_json(json_path: str) -> AgenticWorkflow:
     """
     Load an entire workflow, including AgentArguments, Agents, and Edges, from a single JSON file.
+
+    LLM config can be overridden via environment variables (AVIATOR_LLM_*); see _apply_llm_env_overrides.
 
     Args:
         json_path (str): Path to the JSON file defining the workflow.
@@ -462,6 +500,9 @@ def load_workflow_from_json(json_path: str) -> AgenticWorkflow:
         # Load the JSON data
         with open(json_path, "r") as f:
             workflow_data = json.load(f)
+
+        # Apply env var overrides to LLM config (before loading)
+        _apply_llm_env_overrides(workflow_data)
 
         # Validate required sections in the JSON
         required_sections = ["agent_arguments", "agents", "edges"]

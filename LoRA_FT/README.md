@@ -122,4 +122,7 @@ After fine-tuning, use the LoRA adapter with the **FT workflow**:
   --workflow-json vul_code_gen/AVIATOR_13steps_full_workflow/vul_code_gen_workflow_FT.json
 ```
 
-In `vul_code_gen_workflow_FT.json`, set `llm_path` in the `vul_inject_SFT` LLM section to your output directory (e.g. `outputs` or `Qwen2.5-coder-GRPO/full_GRPO` for GRPO).
+**Configure the fine-tuned model path:**
+
+- **Docker:** Set `AVIATOR_LLM_FINETUNED_PATH` in `.env` (e.g. `AVIATOR_LLM_FINETUNED_PATH=/path/to/outputs`)
+- **Manual:** In `vul_code_gen_workflow_FT.json`, set `llm_path` in the `vul_inject_SFT` LLM section to your output directory (e.g. `outputs` or `Qwen2.5-coder-GRPO/full_GRPO` for GRPO)

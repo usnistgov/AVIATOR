@@ -34,6 +34,9 @@ model_cache/
 # RAG database
 chromadb/
 
+# Environment variables
+.env
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

@@ -3,6 +3,30 @@
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+## Table of contents
+
+- [What is AVIATOR?](#what-is-aviator)
+- [Installation](#installation)
+  - [1. Docker (recommended)](#1-docker-recommended)
+  - [2. Scripts (manual)](#2-scripts-manual)
+- [LLM Configuration](#llm-configuration)
+  - [1. .env file (Docker)](#1-env-file-docker)
+  - [2. Workflow JSON (manual)](#2-workflow-json-manual)
+- [Usage](#usage)
+  - [1. With Docker](#1-with-docker)
+  - [2. With scripts (manual)](#2-with-scripts-native)
+- [CWE selector (beta)](#cwe-selector-beta)
+- [Script Arguments](#script-arguments)
+- [Repository Structure](#repository-structure)
+- [Datasets](#datasets)
+- [Downstream Vulnerability Detection](#downstream-vulnerability-detection)
+- [Abstract](#abstract)
+- [How to cite](#how-to-cite)
+- [License](#license)
+- [Disclaimer](#disclaimer)
+
+---
+
 ## What is AVIATOR?
 
 **AVIATOR** is an AI-agentic framework for **automated vulnerability injection** in source code. It produces high-fidelity, large-scale code security datasets by orchestrating specialized AI agents, RAG, and tool-based analysis in a multi-step workflow.
@@ -11,9 +35,25 @@
 
 ## Installation
 
-**Prerequisites:** Python ≥ 3.11, [uv](https://github.com/astral-sh/uv)
+### 1. Docker (recommended)
 
-From the repository root:
+Reproducible runs with no local Python setup. The image includes Python dependencies, ESBMC, cppcheck, PrimeVul data, and the RAG index.
+
+**Prerequisites:** Docker, Docker Compose
+
+```bash
+docker compose build
+```
+
+Configure the LLM via `.env` before running; see [LLM Configuration → 1. .env file](#1-env-file-docker).
+
+For a lean image without PrimeVul baked in: `docker compose build --build-arg SKIP_PRIMEVUL_DOWNLOAD=1`, then mount `./data` at runtime.
+
+---
+
+### 2. Scripts (manual)
+
+**Prerequisites:** Python ≥ 3.11, [uv](https://github.com/astral-sh/uv)
 
 ```bash
 git clone https://github.com/your-username/aviator.git
@@ -21,22 +61,54 @@ cd AVIATOR/
 ./scripts/setup_aviator.sh
 ```
 
-Options:
-- `--skip-esbmc` — Do not install ESBMC
-- `--skip-cppcheck` — Do not install Cppcheck
-- `--skip-download` — Do not download PrimeVul (use existing data in `./data/PrimeVul_v0.1`)
+Options: `--skip-esbmc`, `--skip-cppcheck`, `--skip-download` (use existing data in `./data/PrimeVul_v0.1`).
 
 ---
 
 ## LLM Configuration
 
-Configure your LLM in the **workflow JSON file** (e.g. `vul_code_gen/AVIATOR_13steps_full_workflow/vul_code_gen_workflow_noFT.json`). The `llms` section defines the models used by the workflow.
+### 1. .env file (Docker)
 
-### Option 1: Model providers (OpenAI-compatible API)
+Copy `.env.example` to `.env` and set values. Docker Compose loads them automatically. No JSON edits needed.
 
-Use any hosted API (OpenAI, Together, Groq, etc.) or a **local model served via vLLM**.
+<table style="border-collapse: collapse;">
+<tr><th style="border: 1px solid;">Model source</th><th style="border: 1px solid;">Variable</th><th style="border: 1px solid;">Description</th></tr>
+<tr>
+<td rowspan="3" style="vertical-align: middle; border: 1px solid;">OpenAI-compatible API (option 1)</td>
+<td style="border: 1px solid;"><code>AVIATOR_LLM_BASE_URL</code></td>
+<td style="border: 1px solid;">API base URL</td>
+</tr>
+<tr>
+<td style="border: 1px solid;"><code>AVIATOR_LLM_API_KEY</code></td>
+<td style="border: 1px solid;">API key</td>
+</tr>
+<tr>
+<td style="border: 1px solid;"><code>AVIATOR_LLM_MODEL</code></td>
+<td style="border: 1px solid;">Model name</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">HuggingFace (option 2)</td>
+<td style="border: 1px solid;"><code>AVIATOR_LLM_PATH</code></td>
+<td style="border: 1px solid;">Model path for in-process HuggingFace model</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">Fine-tuned model (optional)</td>
+<td style="border: 1px solid;"><code>AVIATOR_LLM_FINETUNED_PATH</code></td>
+<td style="border: 1px solid;">LoRA adapter path (FT workflow <code>vul_inject_SFT</code> agent)</td>
+</tr>
+</table>
 
-For hosted APIs or vLLM, set `base_url` and `api_key` in the workflow JSON:
+Per-LLM: `AVIATOR_LLM_<ID>_*` (e.g. `AVIATOR_LLM_MAIN_LLM_BASE_URL`, `AVIATOR_LLM_VUL_INJECT_SFT_PATH`).
+
+---
+
+### 2. Workflow JSON (manual)
+
+Edit workflow JSON files in the codebase directly (e.g. `vul_code_gen/AVIATOR_13steps_full_workflow/vul_code_gen_workflow_noFT.json`).
+
+#### Option 1. Model providers (OpenAI-compatible API)
+
+Use any hosted API (OpenAI, Together, Groq, etc.) or a **local model served via vLLM**:
 
 ```json
 "llm": {
@@ -47,17 +119,17 @@ For hosted APIs or vLLM, set `base_url` and `api_key` in the workflow JSON:
 }
 ```
 
-**Local models:** We strongly recommend using **vLLM** to run models locally. Example for Qwen2.5-Coder:
+Example for local vLLM:
 
 ```bash
 vllm serve Qwen/Qwen2.5-Coder-32B-Instruct --port 18446 --dtype bfloat16 --tensor-parallel-size 2 --max_model_len 32000 --disable-log-requests
 ```
 
-Then set `base_url` to `http://localhost:18446/v1` (or your host:port) in the workflow JSON.
+Set `base_url` to `http://localhost:18446/v1` in the workflow JSON.
 
-### Option 2: Hugging Face Transformers pipeline
+#### Option 2. Hugging Face Transformers pipeline
 
-Run a model directly via the Hugging Face Transformers API (no separate server). This loads the model in-process:
+Run a model in-process (no separate server):
 
 ```json
 "llm": {
@@ -66,25 +138,49 @@ Run a model directly via the Hugging Face Transformers API (no separate server).
 }
 ```
 
+#### Optional: Fine-tuned model (FT workflow)
+
+For the FT workflow, set `llm_path` in the `vul_inject_SFT` LLM section to your LoRA adapter output (e.g. `outputs` or `Qwen2.5-coder-GRPO/full_GRPO`). See [LoRA_FT/README.md](LoRA_FT/README.md).
+
 ---
 
 ## Usage
 
-### Run vulnerability injection
+### 1. With Docker
+
+Run injection:
+
+```bash
+# Quick test (45 samples, always available):
+docker compose run aviator scripts/run_injection.sh \
+  --dataset-path validation_dataset/primevul_paired_test_45.jsonl
+
+# Full PrimeVul test (requires data/ in image):
+docker compose run aviator scripts/run_injection.sh \
+  --dataset-path /AVIATOR/data/PrimeVul_v0.1/primevul_test.jsonl
+```
+
+Run injection with evaluation (FormAI, SARD100 with CodeBLEU and optional ESBMC):
+
+```bash
+docker compose run aviator scripts/run_injection_with_eval.sh \
+  --dataset-path validation_dataset/formai_with_benign_37.jsonl --run-esbmc
+```
+
+---
+
+### 2. With scripts (manual)
+
+Run vulnerability injection:
 
 ```bash
 ./scripts/run_injection.sh --dataset-path /path/to/primevul_test.jsonl
 ```
 
-### Run injection with evaluation
-
-`run_injection_with_eval.sh` runs the injection workflow, then evaluates the generated code against a reference dataset (ground truth):
-
-- **CodeBLEU:** Measures syntactic and lexical similarity between generated and reference vulnerable code.
-- **ESBMC** (optional, sard100/formai): Bounded model checking to verify the injected vulnerability is actually exploitable.
+Run injection with evaluation (CodeBLEU; optional ESBMC for sard100/formai):
 
 ```bash
-./scripts/run_injection_with_eval.sh --dataset-path validation_dataset/formai_with_benign_37.jsonl
+./scripts/run_injection_with_eval.sh --dataset-path validation_dataset/formai_with_benign_37.jsonl --run-esbmc
 ```
 
 ---
@@ -99,7 +195,7 @@ The **14-steps CWE selector** workflow (`vul_code_gen/AVIATOR_14steps_CWEselecto
 
 - **Agentic selection** (`vulnInjectID_selector`): An LLM analyzes the benign code and selects a contextually suitable CWE. Uses a two-step pipeline: first select CWEs, then run injection.
 
-**Weighted random selection**
+#### Weighted random selection
 
 Single workflow — CWE selection and injection in one run:
 
@@ -108,7 +204,7 @@ Single workflow — CWE selection and injection in one run:
   --workflow-json vul_code_gen/AVIATOR_14steps_CWEselector/vul_code_gen_workflow_noFT_CWEselector_random.json
 ```
 
-**Agentic selection**
+#### Agentic selection
 
 Two-step pipeline — first obtain CWEs via AI analysis, then run injection:
 
@@ -206,11 +302,7 @@ The intermediate output from step 1 must include `benign_code`, `vul_inject_id`,
 
 For the experiments evaluating impact on downstream vulnerability detection, we used [VulScribeR](https://github.com/shayandaneshvar/VulScribeR/tree/main), the official repository for the paper *VulScribeR: Exploring RAG-based Vulnerability Augmentation with LLMs*.
 
----
 
-## Dependencies
-
-Core dependencies (via `uv sync`): **unsloth**, **pydantic**, **langchain**, **ChromaDB**, **codebleu**, **tree-sitter-cpp**, **openai**, **PyTorch**, **Transformers**. See `pyproject.toml` and `requirements.txt`.
 
 ---
 
