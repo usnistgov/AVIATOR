@@ -18,8 +18,21 @@ mono_crash.*
 
 # Virtual environment
 .venv/
-# Ignore downloaded ESBMC tool
+# Ignore downloaded/built tools (ESBMC, Cppcheck)
 esbmc/
+static_tools/
+
+# Data folder
+data/
+
+# Injected vulnerability code
+injected_vul_code/
+
+# Model cache
+model_cache/
+
+# RAG database
+chromadb/
 
 # Build results
 [Dd]ebug/
