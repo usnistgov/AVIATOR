@@ -3,7 +3,9 @@ from pydantic import Field
 from typing import Optional
 import torch
 
-from transformers import pipeline, GenerationConfig
+# Import from submodules to avoid lazy-loader issues (e.g. pipeline not exposed in some envs)
+from transformers.pipelines import pipeline
+from transformers.generation import GenerationConfig
 
 class HFpipeline(LLM):
     """

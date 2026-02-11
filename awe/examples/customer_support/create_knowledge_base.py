@@ -1,15 +1,15 @@
 #########################################################################
-# 1) Sign in to Hugging Face by running this command: hf auth login
+# Sign in to Hugging Face by running this command: hf auth login
+#########################################################################
 
 import os
 import sys
 from pathlib import Path
 
-# Ensure awe package is importable (no PYTHONPATH needed when run from repo)
+# Makes the awe package importable
 _src = Path(__file__).resolve().parent.parent.parent.parent
 if str(_src) not in sys.path:
     sys.path.insert(0, str(_src))
-#########################################################################
 import pandas as pd
 from customer_support_rag import SupportKnowledgeRAG
 import logging
