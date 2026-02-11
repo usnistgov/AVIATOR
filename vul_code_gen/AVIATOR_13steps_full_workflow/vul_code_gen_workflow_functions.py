@@ -7,7 +7,13 @@ import subprocess
 import tempfile
 import json
 import os
+import shutil
+from pathlib import Path
+
 from vul_code_gen.knowledge_base.vulnerability_categories import load_vul_categories_from_json
+
+# AVIATOR repo root (parent of vul_code_gen)
+_AVIATOR_ROOT = Path(__file__).resolve().parent.parent.parent
 
 def load_vul_info(vul_inject_id: str) -> dict[str: str]:
     """
@@ -166,18 +172,32 @@ def route_from_critical_analyzer(args):
     else:
         return "VulInjector"  # Go back and try again
 
-def run_cpp_check_analysis(vulnerable_code: str, vul_inject_id: str, cppcheck_path: str ="path/to/cppcheck/cppcheck") -> dict:
+def run_cpp_check_analysis(vulnerable_code: str, vul_inject_id: str, cppcheck_path: str = "static_tools/cppcheck/bin/cppcheck") -> dict:
     """
     Run static analysis on the code using cppcheck to identify potential vulnerabilities.
-    
+
     Args:
         vulnerable_code (str): The code to analyze
         vul_inject_id (str): The vulnerability ID to check for
-        cppcheck_path (str): Path to the cppcheck executable
-        
+        cppcheck_path (str): Path to the cppcheck executable (relative to AVIATOR root or absolute)
+
     Returns:
         dict: Results of the static analysis including any detected CWE IDs
     """
+    # Resolve cppcheck path: relative paths are from AVIATOR root
+    resolved = Path(cppcheck_path)
+    if not resolved.is_absolute():
+        resolved = _AVIATOR_ROOT / resolved
+    if not resolved.is_file():
+        fallback = shutil.which("cppcheck")
+        resolved = Path(fallback) if fallback else resolved
+    if not resolved.is_file():
+        raise FileNotFoundError(
+            f"cppcheck not found at '{cppcheck_path}' (resolved: {resolved}). "
+            "Install via: ./scripts/setup_aviator.sh or add cppcheck to PATH."
+        )
+    cppcheck_path = str(resolved)
+
     # Create a temporary file to hold the code
     with tempfile.NamedTemporaryFile(suffix='.cpp', delete=False) as temp_file:
         temp_file.write(vulnerable_code.encode('utf-8'))

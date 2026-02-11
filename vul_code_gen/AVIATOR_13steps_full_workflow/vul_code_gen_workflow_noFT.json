@@ -1,0 +1,532 @@
+{
+    "llms": [
+        {
+            "id": "main_llm",
+            "llm": {
+                "type": "OpenAICompatibleLLM",
+                "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+                "base_url": "https://your-host-url",
+                "api_key": "your-api-key",
+                "system_prompt": "You are a cybersecurity and code analysis expert with deep knowledge in vulnerability detection, secure coding practices, and static code analysis."
+            }
+        }
+    ],
+    
+    "agent_arguments": [
+        {
+            "type": "BenignCodeAnalyzerInput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."}
+            }
+        },
+        {
+            "type": "BenignCodeAnalyzerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks where potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."}
+            }
+        },
+        {
+            "type": "VulInfoLoaderOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."}
+            }
+        },
+        {
+            "type": "SanitizationDetectorOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."}
+            }
+        },
+        {
+            "type": "VulInjectorOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."}
+            }
+        },
+        {
+            "type": "VulCodeRefinerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."}
+            }
+        },
+        {
+            "type": "CodeDiffCheckerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."}
+            }
+        },
+        {
+            "type": "IdenticalCodeVulInjectorOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."}
+            }
+        },
+        {
+            "type": "VulDiffCheckerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "diff_analysis": {"type": "str", "description": "Analysis of whether the code changes correspond to the requested vulnerability and if any functionality is lost."}
+            }
+            
+        },
+        {
+            "type": "CriticalAnalyzerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."},
+                "analysis_result": {"type": "str", "description": "Critical analysis of whether the modifications actually correspond to the expected vulnerability type and whether the claimed changes were actually made."},
+                "modification_valid": {"type": "bool", "description": "Boolean indicating whether the modifications properly introduce the intended vulnerability."}
+            }
+        },
+        {
+            "type": "CppCheckAnalyzerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."},
+                "analysis_result": {"type": "str", "description": "Critical analysis of whether the modifications actually correspond to the expected vulnerability type and whether the claimed changes were actually made."},
+                "modification_valid": {"type": "bool", "description": "Boolean indicating whether the modifications properly introduce the intended vulnerability."},
+                "cwe_ids": {"type": "list[str]", "description": "List of CWE IDs detected by the static analysis tool."},
+                "static_analysis_errors": {"type": "list[dict]", "description": "List of errors detected by the static analysis tool."}
+            }
+        },
+        {
+            "type": "VulnerabilityVerifierOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."},
+                "analysis_result": {"type": "str", "description": "Critical analysis of whether the modifications actually correspond to the expected vulnerability type and whether the claimed changes were actually made."},
+                "modification_valid": {"type": "bool", "description": "Boolean indicating whether the modifications properly introduce the intended vulnerability."},
+                "cwe_ids": {"type": "list[str]", "description": "List of CWE IDs detected by the static analysis tool."},
+                "static_analysis_errors": {"type": "list[dict]", "description": "List of errors detected by the static analysis tool."},
+                "is_correctly_vulnerable": {"type": "bool", "description": "Whether the code is correctly vulnerable with the intended vulnerability."},
+                "verification_explanation": {"type": "str", "description": "Detailed explanation of the verification results, including why the code is or is not correctly vulnerable."}
+            }
+        },
+        {
+            "type": "VulnerabilityFixerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."},
+                "analysis_result": {"type": "str", "description": "Critical analysis of whether the modifications actually correspond to the expected vulnerability type and whether the claimed changes were actually made."},
+                "modification_valid": {"type": "bool", "description": "Boolean indicating whether the modifications properly introduce the intended vulnerability."},
+                "cwe_ids": {"type": "list[str]", "description": "List of CWE IDs detected by the static analysis tool."},
+                "static_analysis_errors": {"type": "list[dict]", "description": "List of errors detected by the static analysis tool."},
+                "is_correctly_vulnerable": {"type": "bool", "description": "Whether the code is correctly vulnerable with the intended vulnerability."},
+                "verification_explanation": {"type": "str", "description": "Detailed explanation of the verification results, including why the code is or is not correctly vulnerable."}
+            }
+        },
+        {
+            "type": "CppCheckAnalyzer2Output",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "vul_inject_info": {"type": "str", "description": "Information about the category of code vulnerability to inject, ready to be used in prompt."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks in between which potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."},
+                "sanitization": {"type": "list[dict[str,str]]", "description": "Sanitization and vulnerability mitigation elements that makes the code benign to vul_inject_id."},
+                "vulnerable_code": {"type": "str", "description": "The modified version of the benign function containing the injected vulnerability."},
+                "injection_location": {"type": "str", "description": "A clear indication of where in the function the vulnerability was injected (e.g., line number, code block description, or section of the function)."},
+                "injection_justification": {"type": "str", "description": "A detailed explanation of why this vulnerability fits naturally within the benign function, referencing the analysis of the benign function, the retrieved vulnerable context, and the vulnerability injection information."},
+                "confidence_score": {"type": "int", "description": "Score between 0 and 10 on how confident you are that your answer is correct and the vulnerable code actually is vulnerable with the proper vulnerability."},
+                "confidence_justification": {"type": "str", "description": "Justification of the confidence score."},
+                "code_diff": {"type": "str", "description": "Annotated diff showing the differences between benign and vulnerable code."},
+                "is_different": {"type": "bool", "description": "Boolean indicating whether the vulnerable code is meaningfully different from the benign code (ignoring whitespace, tabs, and comments)."},
+                "analysis_result": {"type": "str", "description": "Critical analysis of whether the modifications actually correspond to the expected vulnerability type and whether the claimed changes were actually made."},
+                "modification_valid": {"type": "bool", "description": "Boolean indicating whether the modifications properly introduce the intended vulnerability."},
+                "cwe_ids": {"type": "list[str]", "description": "List of CWE IDs detected by the static analysis tool."},
+                "static_analysis_errors": {"type": "list[dict]", "description": "List of errors detected by the static analysis tool."},
+                "is_correctly_vulnerable": {"type": "bool", "description": "Whether the code is correctly vulnerable with the intended vulnerability."},
+                "verification_explanation": {"type": "str", "description": "Detailed explanation of the verification results, including why the code is or is not correctly vulnerable."}
+            }
+        }
+    ],
+
+    "agents": [
+        {
+            "type": "AIAgent",
+            "name_id": "BenignCodeAnalyzer",
+            "input_schema": "BenignCodeAnalyzerInput",
+            "output_schema": "BenignCodeAnalyzerOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.BENIGN_CODE_ANALYZER_TEMPLATE",
+            "max_output_tokens": 8000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "VulInfoLoader",
+            "input_schema": "BenignCodeAnalyzerOutput",
+            "output_schema": "VulInfoLoaderOutput",
+            "propagate_input_args": true,
+            "call_function": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.load_vul_info"
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "SanitizationDetector",
+            "input_schema": "VulInfoLoaderOutput",
+            "output_schema": "SanitizationDetectorOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.SANITIZATION_DETECTOR_TEMPLATE",
+            "max_output_tokens": 8000
+        },
+        {
+            "type": "RAGAgent",
+            "name_id": "VulInjector",
+            "input_schema": "SanitizationDetectorOutput",
+            "output_schema": "VulInjectorOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "rag": {
+                "type": "vul_code_gen.AVIATOR_13steps_full_workflow.VulCodePairRAG.ChromaVulCodePairRAG",
+                "embedding_model_path": "Alibaba-NLP/gte-Qwen2-1.5B-instruct",
+                "knowledge_base_path": "vul_code_gen/chromadb"
+            },
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.VUL_INJECTOR_TEMPLATE",
+            "retrieval_param_mapping": {"retrieval_query": "benign_code", "vul_id":"vul_inject_id"},
+            "retrieval_placeholder_key": "retrieved_context",
+            "top_k": 4,
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "VulCodeRefiner",
+            "input_schema": "VulInjectorOutput",
+            "output_schema": "VulCodeRefinerOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.VUL_CODE_LLM_CHECKER_TEMPLATE",
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "CodeDiffChecker",
+            "input_schema": "VulCodeRefinerOutput",
+            "output_schema": "CodeDiffCheckerOutput",
+            "propagate_input_args": true,
+            "call_function": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.check_code_diff"
+        },
+        {
+            "type": "RAGAgent",
+            "name_id": "IdenticalCodeVulInjector",
+            "input_schema": "CodeDiffCheckerOutput",
+            "output_schema": "IdenticalCodeVulInjectorOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "rag": {
+                "type": "vul_code_gen.AVIATOR_13steps_full_workflow.VulCodePairRAG.ChromaVulCodePairRAG",
+                "embedding_model_path": "Alibaba-NLP/gte-Qwen2-1.5B-instruct",
+                "knowledge_base_path": "vul_code_gen/chromadb"
+            },
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.IDENTICAL_CODE_VUL_INJECTOR_TEMPLATE",
+            "retrieval_param_mapping": {"retrieval_query": "benign_code", "vul_id":"vul_inject_id"},
+            "retrieval_placeholder_key": "retrieved_context",
+            "top_k": 4,
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "VulDiffChecker",
+            "input_schema": "CodeDiffCheckerOutput",
+            "output_schema": "VulDiffCheckerOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.VUL_DIFF_CHECKER_TEMPLATE",
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "CodeDiffChecker2",
+            "input_schema": "VulDiffCheckerOutput",
+            "output_schema": "CodeDiffCheckerOutput",
+            "propagate_input_args": true,
+            "call_function": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.check_code_diff"
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "CriticalAnalyzer",
+            "input_schema": "CodeDiffCheckerOutput",
+            "output_schema": "CriticalAnalyzerOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.CRITICAL_ANALYZER_TEMPLATE",
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "CppCheckAnalyzer",
+            "input_schema": "CriticalAnalyzerOutput",
+            "output_schema": "CppCheckAnalyzerOutput",
+            "propagate_input_args": true,
+            "call_function": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.run_cpp_check_analysis",
+            "function_args": {"cppcheck_path": "static_tools/cppcheck/bin/cppcheck"}
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "VulnerabilityVerifier",
+            "input_schema": "CppCheckAnalyzerOutput",
+            "output_schema": "VulnerabilityVerifierOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.VULNERABILITY_VERIFIER_TEMPLATE",
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "VulnerabilityFixer",
+            "input_schema": "VulnerabilityVerifierOutput",
+            "output_schema": "VulnerabilityFixerOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.VULNERABILITY_FIXER_TEMPLATE",
+            "max_output_tokens": 18000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "CppCheckAnalyzer2",
+            "input_schema": "VulnerabilityFixerOutput",
+            "output_schema": "CppCheckAnalyzer2Output",
+            "propagate_input_args": true,
+            "call_function": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.run_cpp_check_analysis"
+        },
+        {
+            "type": "AIAgent",
+            "name_id": "VulnerabilityVerifier2",
+            "input_schema": "CppCheckAnalyzer2Output",
+            "output_schema": "VulnerabilityVerifierOutput",
+            "propagate_input_args": true,
+            "llm_id": "main_llm",
+            "prompt": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_prompts.VULNERABILITY_VERIFIER_TEMPLATE",
+            "max_output_tokens": 18000
+        }
+    ],
+
+    "edges": [
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "start",
+            "targetAgent": "BenignCodeAnalyzer"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "BenignCodeAnalyzer",
+            "targetAgent": "VulInfoLoader"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "VulInfoLoader",
+            "targetAgent": "SanitizationDetector"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "SanitizationDetector",
+            "targetAgent": "VulInjector"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "VulInjector",
+            "targetAgent": "VulCodeRefiner"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "VulCodeRefiner",
+            "targetAgent": "CodeDiffChecker"
+        },
+        {
+            "type": "ConditionalEdge",
+            "sourceAgent": "CodeDiffChecker",
+            "condition_fn": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.route_from_diff_checker_v2"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "IdenticalCodeVulInjector",
+            "targetAgent": "CodeDiffChecker"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "VulDiffChecker",
+            "targetAgent": "CodeDiffChecker2"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "CodeDiffChecker2",
+            "targetAgent": "CriticalAnalyzer"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "CriticalAnalyzer",
+            "targetAgent": "CppCheckAnalyzer"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "CppCheckAnalyzer",
+            "targetAgent": "VulnerabilityVerifier"
+        },
+        {
+            "type": "ConditionalEdge",
+            "sourceAgent": "VulnerabilityVerifier",
+            "condition_fn": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.route_from_vulnerability_verifier"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "VulnerabilityFixer",
+            "targetAgent": "CppCheckAnalyzer2"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "CppCheckAnalyzer2",
+            "targetAgent": "VulnerabilityVerifier2"
+        },
+        {
+            "type": "ConditionalEdge",
+            "sourceAgent": "VulnerabilityVerifier2",
+            "condition_fn": "AVIATOR_13steps_full_workflow.vul_code_gen_workflow_functions.route_from_vulnerability_verifier2"
+        }
+    ]
+}

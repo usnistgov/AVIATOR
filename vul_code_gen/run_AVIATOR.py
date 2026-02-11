@@ -1,16 +1,29 @@
 #########################################################################
-# 1) Sign in to Hugging Face by running this command: huggingface-cli login
-#
-##### 2) RUN #####
-### Execute this script:
-# PYTHONPATH=path/to/vul-code-gen python vul_code_gen/vul_code_gen_workflow_validate_primevul_run.py 
-### Alternatively, uncomment code below
-# Set project location to be able to call project modules 
-import sys
-sys.path.append("path/to/vul-code-gen")
-import os
-import pandas as pd
+# 1) Sign in to Hugging Face by running this command: hf auth login
 #########################################################################
+import os
+import sys
+from pathlib import Path
+# Makes the project root importable (awe, vul_code_gen)
+_src = Path(__file__).resolve().parent.parent
+if str(_src) not in sys.path:
+    sys.path.insert(0, str(_src))
+
+
+def _patch_transformers_cache_for_gte_qwen():
+    """Compatibility for Alibaba-NLP/gte-Qwen2: model code calls get_usable_length, removed in transformers 4.56+."""
+    try:
+        from transformers import cache_utils
+        if not hasattr(cache_utils.DynamicCache, "get_usable_length"):
+            def get_usable_length(self, new_seq_length=None, layer_idx=0):
+                return self.get_seq_length(layer_idx)
+            cache_utils.DynamicCache.get_usable_length = get_usable_length
+    except Exception:
+        pass
+
+_patch_transformers_cache_for_gte_qwen()
+
+import pandas as pd
 
 from vul_code_gen.dataset_utils import load_primevul_vul_pairs, load_sard100_vul_pairs, load_formai_pairs
 from codebleu import calc_codebleu
