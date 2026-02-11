@@ -148,7 +148,7 @@ For the FT workflow, set `llm_path` in the `vul_inject_SFT` LLM section to your 
 
 ### 1. With Docker
 
-Run injection:
+Run injection. Output is saved to `injected_vul_code/<dataset_basename>/` by default.
 
 ```bash
 # Quick test (45 samples, always available):
