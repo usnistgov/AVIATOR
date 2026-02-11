@@ -1,0 +1,88 @@
+{
+    "llms": [
+        {
+            "id": "qwen-coder",
+            "llm": {
+                "type": "OpenAICompatibleLLM",
+                "model": "Qwen/Qwen2.5-Coder-32B-Instruct",
+                "base_url": "https://pn131274.nist.gov:8446/v1",
+                "api_key": "sk-no-key-required",
+                "system_prompt": "You are a cybersecurity and code analysis expert with deep knowledge in vulnerability detection, secure coding practices, and static code analysis."
+            }
+        }
+    ],
+    
+    "agent_arguments": [
+        {
+            "type": "BenignCodeAnalyzerInput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."}
+            }
+        },
+        {
+            "type": "BenignCodeAnalyzerOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks where potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."}
+            }
+        },
+        {
+            "type": "VulnInjectIDSlectorOutput",
+            "fields": {
+                "benign_code": {"type": "str", "description": "A benign source code function in which to inject a vulnerability."},
+                "vul_inject_id": {"type": "str", "description": "Id of the vulnerability id associated with the benign code in PrimeVul. Must belong to available_vul_categories."},
+                "function_purpose": {"type": "str", "description": "A concise summary of what the function is intended to do."},
+                "input_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected inputs, including assumed data types and formats."},
+                "output_descriptions": {"type": "list[dict[str,str]]", "description": "Description of the expected output, including assumed data type and format."},
+                "source_sink_list": {"type": "list[tuple[str, str]]", "description": "List of sources and sinks where potential vulnerabilities could be inserted."},
+                "data_flows": {"type": "list[str]", "description": "Description of how data flows between sources and sinks."}
+            }
+        }
+    ],
+
+    "agents": [
+        {
+            "type": "AIAgent",
+            "name_id": "BenignCodeAnalyzer",
+            "input_schema": "BenignCodeAnalyzerInput",
+            "output_schema": "BenignCodeAnalyzerOutput",
+            "propagate_input_args": true,
+            "llm_id": "qwen-coder",
+            "prompt": "AVIATOR_14steps_CWEselector.vul_code_gen_workflow_prompts.BENIGN_CODE_ANALYZER_TEMPLATE",
+            "max_output_tokens": 8000
+        },
+        {
+            "type": "FunctionAgent",
+            "name_id": "VulnInjectIDSlector",
+            "input_schema": "BenignCodeAnalyzerOutput",
+            "output_schema": "VulnInjectIDSlectorOutput",
+            "propagate_input_args": true,
+            "call_function": "AVIATOR_14steps_CWEselector.vul_code_gen_workflow_functions.vulnInjectID_selector"
+        }
+    ],
+
+    "edges": [
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "start",
+            "targetAgent": "BenignCodeAnalyzer"
+        },
+        {
+            "type": "ConditionalEdge",
+            "sourceAgent": "BenignCodeAnalyzer",
+            "targetAgent": "VulnInjectIDSlector",
+            "condition_fn": "AVIATOR_14steps_CWEselector.vul_code_gen_workflow_functions.route_from_benign_code_analyzer"
+        },
+        {
+            "type": "SimpleEdge",
+            "sourceAgent": "VulnInjectIDSlector",
+            "targetAgent": "end"
+        }
+    ]
+}

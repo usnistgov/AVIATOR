@@ -1,4 +1,4 @@
-BENIGN_CODE_ANALYZER_TEMPLATE="""Your task is to analyze the benign function below and try to better understand its goals and its code structure.
+BENIGN_CODE_ANALYZER_TEMPLATE="""Your ask is to analyze the benign function below and try to better understand its goals and its code structure.
 {benign_code}
 
 Return your response as a valid JSON object with exactly the following parameters, maintaining correct types:
