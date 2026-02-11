@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+
+# Secrets (used by docker compose at runtime, not needed in image)
+.env
+
+# Python
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.eggs
+
+# Build artifacts
+static_tools/
+esbmc/
+data/
+injected_vul_code/
+chromadb/
+model_cache/
+*.db
+
+# IDE
+.vscode
+.idea
+*.code-workspace
+
+# Misc
+*.log
+.DS_Store
+*.swp
+*.swo
+awe/examples/**/saved_run/

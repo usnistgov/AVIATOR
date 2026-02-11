@@ -1,0 +1,46 @@
+# AVIATOR Docker Compose - vulnerability injection workflow
+#
+# Build:  docker compose build
+# Help:   docker compose run aviator
+# Run (validation_dataset - always in image): docker compose run aviator scripts/run_injection.sh --dataset-path validation_dataset/primevul_paired_test_45.jsonl
+# Run (full PrimeVul - requires data/ from build or mount): docker compose run aviator scripts/run_injection.sh --dataset-path /app/AVIATOR/data/PrimeVul_v0.1/primevul_test_paired.jsonl
+# Eval:  docker compose run aviator scripts/run_injection_with_eval.sh --dataset-path validation_dataset/formai_with_benign_37.jsonl --run-esbmc
+#
+# Configure LLM via .env (copy .env.example to .env, set values). No JSON edits needed.
+
+services:
+  aviator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Set to "1" for lean image; then mount ./data at runtime
+        SKIP_PRIMEVUL_DOWNLOAD: "0"
+    image: aviator:latest
+    container_name: aviator
+    working_dir: /app/AVIATOR
+    # Allow reaching vLLM/API on host via host.docker.internal (Linux needs host-gateway)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - AVIATOR_ROOT=/app/AVIATOR
+      - HF_HOME=/app/AVIATOR/.cache/huggingface
+      # LLM config (from .env)
+      - AVIATOR_LLM_BASE_URL=${AVIATOR_LLM_BASE_URL:-}
+      - AVIATOR_LLM_API_KEY=${AVIATOR_LLM_API_KEY:-}
+      - AVIATOR_LLM_MODEL=${AVIATOR_LLM_MODEL:-}
+      - AVIATOR_LLM_PATH=${AVIATOR_LLM_PATH:-}
+      - AVIATOR_LLM_FINETUNED_PATH=${AVIATOR_LLM_FINETUNED_PATH:-}
+    volumes:
+      # Output directory (injected code written here)
+      - ./injected_vul_code:/app/AVIATOR/injected_vul_code
+      # Optional: custom workflow JSON (LLM base_url, api_key)
+      # - ./my_workflow.json:/app/AVIATOR/vul_code_gen/AVIATOR_13steps_full_workflow/vul_code_gen_workflow_noFT.json
+      # Optional: mount ./data for PrimeVul (run ./scripts/setup_aviator.sh first, or if built with SKIP_PRIMEVUL_DOWNLOAD=1)
+      # - ./data:/app/AVIATOR/data
+      # Persist HF model cache across runs
+      - aviator_cache:/app/AVIATOR/.cache
+    command: ["--help"]
+
+volumes:
+  aviator_cache:
