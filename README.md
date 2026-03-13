@@ -31,7 +31,8 @@
 
 **AVIATOR** is an AI-agentic framework for **automated vulnerability injection** in source code. It produces high-fidelity, large-scale code security datasets by orchestrating specialized AI agents, RAG, and tool-based analysis in a multi-step workflow.
 
-Paper: [AVIATOR: Towards AI-Agentic Vulnerability Injection Workflow for High-Fidelity, Large-Scale Code Security Dataset (arXiv:2508.20866)](https://arxiv.org/abs/2508.20866)
+**Paper:** [AVIATOR: Towards AI-Agentic Vulnerability Injection Workflow for High-Fidelity, Large-Scale Code Security Dataset (arXiv:2508.20866)](https://arxiv.org/abs/2508.20866))
+
 ---
 
 ## Installation
