@@ -7,14 +7,14 @@
 
 - [What is AVIATOR?](#what-is-aviator)
 - [I. Installation](#installation)
-  - [1. Docker (recommended)](#1-docker-recommended)
-  - [2. Scripts (manual)](#2-scripts-manual)
+  - [Option A. Docker (recommended)](#1-docker-recommended)
+  - [Option B. Scripts (manual)](#2-scripts-manual)
 - [II. LLM Configuration](#llm-configuration)
-  - [1. .env file (Docker)](#1-env-file-docker)
-  - [2. Workflow JSON (manual)](#2-workflow-json-manual)
+  - [Option A. .env file (Docker)](#1-env-file-docker)
+  - [Option B. Workflow JSON (manual)](#2-workflow-json-manual)
 - [III. Usage](#usage)
-  - [1. With Docker](#1-with-docker)
-  - [2. With scripts (manual)](#2-with-scripts-native)
+  - [Option A. With Docker](#1-with-docker)
+  - [Option B. With scripts (manual)](#2-with-scripts-native)
 - [CWE selector (beta)](#cwe-selector-beta)
 - [Script Arguments](#script-arguments)
 - [Repository Structure](#repository-structure)
@@ -37,7 +37,7 @@
 
 ## I. Installation
 
-### 1. Docker (recommended)
+### Option A. Docker (recommended)
 
 Reproducible runs with no local Python setup. The image includes Python dependencies, ESBMC, cppcheck, PrimeVul data, and the RAG index.
 
@@ -53,7 +53,7 @@ For a lean image without PrimeVul baked in: `docker compose build --build-arg SK
 
 ---
 
-### 2. Scripts (manual)
+### Option B. Scripts (manual)
 
 **Prerequisites:** Python ≥ 3.11, [uv](https://github.com/astral-sh/uv)
 
@@ -69,7 +69,7 @@ Options: `--skip-esbmc`, `--skip-cppcheck`, `--skip-download` (use existing data
 
 ## II. LLM Configuration
 
-### 1. .env file (Docker)
+### Option A. .env file (Docker)
 
 Copy `.env.example` to `.env` and set values. Docker Compose loads them automatically. No JSON edits needed.
 
@@ -104,11 +104,11 @@ Per-LLM: `AVIATOR_LLM_<ID>_*` (e.g. `AVIATOR_LLM_MAIN_LLM_BASE_URL`, `AVIATOR_LL
 
 ---
 
-### 2. Workflow JSON (manual)
+### Option B. Workflow JSON (manual)
 
 Edit workflow JSON files in the codebase directly (e.g. `vul_code_gen/AVIATOR_13steps_full_workflow/vul_code_gen_workflow_noFT.json`).
 
-#### Option 1. Model providers (OpenAI-compatible API)
+#### Option B.1. Model providers (OpenAI-compatible API)
 
 Use any hosted API (OpenAI, Together, Groq, etc.) or a **local model served via vLLM**:
 
@@ -129,7 +129,7 @@ vllm serve Qwen/Qwen2.5-Coder-32B-Instruct --port 18446 --dtype bfloat16 --tenso
 
 Set `base_url` to `http://localhost:18446/v1` in the workflow JSON.
 
-#### Option 2. Hugging Face Transformers pipeline
+#### Option B.2. Hugging Face Transformers pipeline
 
 Run a model in-process (no separate server):
 
@@ -148,7 +148,7 @@ For the FT workflow, set `llm_path` in the `vul_inject_SFT` LLM section to your 
 
 ## III. Usage
 
-### 1. With Docker
+### Option A. With Docker
 
 Run injection. Output is saved to `injected_vul_code/<dataset_basename>/` by default.
 
@@ -171,7 +171,7 @@ docker compose run aviator scripts/run_injection_with_eval.sh \
 
 ---
 
-### 2. With scripts (manual)
+### Option B. With scripts (manual)
 
 Run vulnerability injection:
 
