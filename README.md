@@ -6,13 +6,13 @@
 ## Table of contents
 
 - [What is AVIATOR?](#what-is-aviator)
-- [Installation](#installation)
+- [I. Installation](#installation)
   - [1. Docker (recommended)](#1-docker-recommended)
   - [2. Scripts (manual)](#2-scripts-manual)
-- [LLM Configuration](#llm-configuration)
+- [II. LLM Configuration](#llm-configuration)
   - [1. .env file (Docker)](#1-env-file-docker)
   - [2. Workflow JSON (manual)](#2-workflow-json-manual)
-- [Usage](#usage)
+- [III. Usage](#usage)
   - [1. With Docker](#1-with-docker)
   - [2. With scripts (manual)](#2-with-scripts-native)
 - [CWE selector (beta)](#cwe-selector-beta)
@@ -35,7 +35,7 @@
 
 ---
 
-## Installation
+## I. Installation
 
 ### 1. Docker (recommended)
 
@@ -67,7 +67,7 @@ Options: `--skip-esbmc`, `--skip-cppcheck`, `--skip-download` (use existing data
 
 ---
 
-## LLM Configuration
+## II. LLM Configuration
 
 ### 1. .env file (Docker)
 
@@ -146,7 +146,7 @@ For the FT workflow, set `llm_path` in the `vul_inject_SFT` LLM section to your 
 
 ---
 
-## Usage
+## III. Usage
 
 ### 1. With Docker
 
