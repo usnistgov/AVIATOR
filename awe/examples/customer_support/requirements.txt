@@ -1,4 +1,4 @@
 langchain-huggingface==0.1.2
 langchain_chroma==0.2.2
-langchain_text_splitters==0.3.7
+langchain_text_splitters==1.1.2
 pandas==2.2.3
